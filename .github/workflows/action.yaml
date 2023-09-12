@@ -4,7 +4,7 @@ on: [push]
   #   tags:
   #     - 'v*.*.*'
 jobs:
-    Build:
+    SingleBuild:
       runs-on: ubuntu-20.04
       env:
         HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
@@ -21,7 +21,7 @@ jobs:
           run: go mod download
         - name: Building image
           run: |
-            go run single/build/main.go 
+            go run single/main.go 
         - name: Check image
           run: |
             docker images | grep ${{ vars.HARBOR_URL }}
