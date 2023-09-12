@@ -9,5 +9,5 @@ jobs:
         steps:
           - name: Check env
             run: |
-              echo "Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} "
-              echo "HARBOR_SECRET: ${{ secrets.HARBOR_SECRET}} | HARBOR_S3_SECRET: ${{ secrets.HARBOR_S3_SECRET }} | HARBOR_USER: ${{ secrets.HARBOR_USER }}"
+              echo 'Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} ''
+              echo 'HARBOR_SECRET: ${{ secrets.HARBOR_SECRET}} | HARBOR_S3_SECRET: ${{ secrets.HARBOR_S3_SECRET }} | HARBOR_USER: ${{ secrets.HARBOR_USER }}'
