@@ -9,4 +9,4 @@ jobs:
         steps:
           - name: Check env
             run: |
-              echo "${{ vars.HARBOR_PROJECT }}"
+              echo "Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} "
