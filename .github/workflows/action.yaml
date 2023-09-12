@@ -24,4 +24,4 @@ jobs:
             go run single/build/main.go 
         - name: Check image
           run: |
-            docker images
+            docker images | grep ${{ vars.HARBOR_URL }}
