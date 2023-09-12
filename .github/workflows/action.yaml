@@ -9,7 +9,6 @@ jobs:
         steps:
           - name: Check env
             run: |
-              echo "Repository: $GITHUB_REPOSITORY"
-              echo "Commit SHA: $GITHUB_SHA"
+              echo $HARBOR_PROJECT
         outputs:
           tag_name: ${{ steps.getenv.outputs.tag_name }}
