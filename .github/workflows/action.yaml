@@ -8,6 +8,6 @@ jobs:
         runs-on: ubuntu-20.04
         steps:
           - name: Check env
-            run: echo "Project|$HARBOR_PROJECT  HARBOR_URL:$HARBOR_URL   HARBOR_S3_URL|$HARBOR_S3_URL "
+            run: echo "Project|env.HARBOR_PROJECT  HARBOR_URL|env.HARBOR_URL   HARBOR_S3_URL|env.HARBOR_S3_URL "
         outputs:
           tag_name: ${{ steps.getenv.outputs.tag_name }}
