@@ -1,13 +1,15 @@
 name: Push Image
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: [push]
+  # push:
+  #   tags:
+  #     - 'v*.*.*'
 jobs:
     setenv:
         runs-on: ubuntu-20.04
         steps:
           - name: Check env
-            run: echo "Project|env.HARBOR_PROJECT  HARBOR_URL|env.HARBOR_URL   HARBOR_S3_URL|env.HARBOR_S3_URL "
+            run: |
+              echo "Repository: $GITHUB_REPOSITORY"
+              echo "Commit SHA: $GITHUB_SHA"
         outputs:
           tag_name: ${{ steps.getenv.outputs.tag_name }}
