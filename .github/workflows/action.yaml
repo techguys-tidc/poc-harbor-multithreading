@@ -4,7 +4,7 @@ on: [push]
   #   tags:
   #     - 'v*.*.*'
 jobs:
-    SingleBuild:
+    SingleBuildToHarbor:
       runs-on: ubuntu-20.04
       env:
         HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
@@ -25,3 +25,24 @@ jobs:
         - name: Check image
           run: |
             docker images | grep ${{ vars.HARBOR_URL }}
+    SingleBuildToHarborS3:
+      runs-on: ubuntu-20.04
+      env:
+        HARBOR_BASE_URL: ${{vars.HARBOR_S3_URL}} 
+        HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT  }}
+        HARBOR_USER: ${{ vars.HARBOR_USER }}
+        HARBOR_PASS: ${{ secrets.HARBOR_S3_SECRET }}
+      steps:
+        - uses: actions/checkout@v3
+        - name: Set up Go
+          uses: actions/setup-go@v4
+          with:
+            go-version: '1.20'  
+        - name: Install dependencies
+          run: go mod download
+        - name: Building image
+          run: |
+            go run single/main.go 
+        - name: Check image
+          run: |
+            docker images | grep ${{ vars.HARBOR_S3_URL }}
