@@ -6,6 +6,11 @@ on: [push]
 jobs:
     Build:
       runs-on: ubuntu-20.04
+      env:
+        HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
+        HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT  }}
+        HARBOR_USER: ${{ vars.HARBOR_USER }}
+        HARBOR_PASS: ${{ secrets.HARBOR_SECRET }}
       steps:
         - uses: actions/checkout@v3
         - name: Set up Go
@@ -17,11 +22,6 @@ jobs:
         - name: Building image
           run: |
             go run single/build/main.go 
-          env:
-            HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
-            HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT  }}
-            HARBOR_USER: ${{ vars.HARBOR_USER }}
-            HARBOR_PASS: ${{ secrets.HARBOR_SECRET }}
         - name: Check image
           run: |
             docker images
