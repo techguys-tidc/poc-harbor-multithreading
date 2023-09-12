@@ -1,0 +1,13 @@
+name: Push Image
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+    setenv:
+        runs-on: ubuntu-20.04
+        steps:
+          - name: Check env
+            run: echo "Project|$HARBOR_PROJECT  HARBOR_URL:$HARBOR_URL   HARBOR_S3_URL|$HARBOR_S3_URL "
+        outputs:
+          tag_name: ${{ steps.getenv.outputs.tag_name }}
