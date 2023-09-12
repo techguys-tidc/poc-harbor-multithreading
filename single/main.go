@@ -63,10 +63,7 @@ func pushImage(workerID int, ch chan time.Duration, imageName string) {
 
 func main() {
 	imageName := generateImageName()
-
 	buildImage(imageName)
-
-	os.Exit(1)
 
 	cmd := exec.Command("docker", "login", harborURL, "-u", username, "-p", password)
 	pushing, err := cmd.CombinedOutput()
