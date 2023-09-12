@@ -9,28 +9,29 @@ jobs:
       steps:
         - name: Check env
           run: |
+            echo $GITHUB_ENV 
             echo 'Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} '
             echo 'HARBOR_USER: ${{ vars.HARBOR_USER }} | HARBOR_SECRET: ${{ secrets.HARBOR_SECRET }} | HARBOR_S3_SECRET: ${{ secrets.HARBOR_S3_SECRET }} '
-          env:
-            HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
-            HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT }} 
-            HARBOR_USER: ${{ vars.HARBOR_USER }}  
-            HARBOR_PASS: ${{ secrets.HARBOR_SECRET }}
-    Build:
-      runs-on: ubuntu-20.04
-      needs: SetEnvForHarbor
-      steps:
-        - uses: actions/checkout@v3
-        - name: Set up Go
-          uses: actions/setup-go@v4
-          with:
-            go-version: '1.20'  
-        - name: Install dependencies
-          run: go mod download
-        - name: Building image
-          run: |
-            env
-            go run single/build/main.go 
-        - name: Check image
-          run: |
-            docker images
+          # env:
+          #   HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
+          #   HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT }} 
+          #   HARBOR_USER: ${{ vars.HARBOR_USER }}  
+          #   HARBOR_PASS: ${{ secrets.HARBOR_SECRET }}
+    # Build:
+    #   runs-on: ubuntu-20.04
+    #   needs: SetEnvForHarbor
+    #   steps:
+    #     - uses: actions/checkout@v3
+    #     - name: Set up Go
+    #       uses: actions/setup-go@v4
+    #       with:
+    #         go-version: '1.20'  
+    #     - name: Install dependencies
+    #       run: go mod download
+    #     - name: Building image
+    #       run: |
+    #         env
+    #         go run single/build/main.go 
+    #     - name: Check image
+    #       run: |
+    #         docker images
