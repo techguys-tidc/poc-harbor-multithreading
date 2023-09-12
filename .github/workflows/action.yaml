@@ -9,6 +9,4 @@ jobs:
         steps:
           - name: Check env
             run: |
-              echo $HARBOR_PROJECT
-        outputs:
-          tag_name: ${{ steps.getenv.outputs.tag_name }}
+              echo "${{ vars.HARBOR_PROJECT }}"
