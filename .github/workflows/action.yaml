@@ -29,6 +29,7 @@ jobs:
           run: go mod download
         - name: Building image
           run: |
+            env
             go run single/build/main.go 
         - name: Check image
           run: |
