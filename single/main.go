@@ -17,7 +17,7 @@ var (
 	username      = os.Getenv("HARBOR_USER")
 	password      = os.Getenv("HARBOR_PASS")
 	parallelCount = 5
-	loopCount     = 100 // Number of times each worker will push
+	loopCount     = 50
 )
 
 func generateImageName() string {
