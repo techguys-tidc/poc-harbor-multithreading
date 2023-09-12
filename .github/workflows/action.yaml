@@ -4,10 +4,29 @@ on: [push]
   #   tags:
   #     - 'v*.*.*'
 jobs:
-    setenv:
-        runs-on: ubuntu-20.04
-        steps:
-          - name: Check env
-            run: |
-              echo 'Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} '
-              echo ' HARBOR_USER: ${{ vars.HARBOR_USER }} | HARBOR_SECRET: ${{ secrets.HARBOR_SECRET}} | HARBOR_S3_SECRET: ${{ secrets.HARBOR_S3_SECRET }} '
+    SetEnvForHarbor:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: Check env
+          run: |
+            echo 'Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} '
+            echo 'HARBOR_USER: ${{ vars.HARBOR_USER }} | HARBOR_SECRET: ${{ secrets.HARBOR_SECRET }} | HARBOR_S3_SECRET: ${{ secrets.HARBOR_S3_SECRET }} '
+          env:
+            HARBOR_BASE_URL: ${{vars.HARBOR_URL}} 
+            HARBOR_PROJECT: ${{ vars.HARBOR_PROJECT }} 
+            HARBOR_USER: ${{ vars.HARBOR_USER }}  
+            HARBOR_PASS: ${{ secrets.HARBOR_SECRET }}
+    Build:
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v3
+        - name: Set up Go
+          uses: actions/setup-go@v4
+          with:
+            go-version: '1.20'  
+        - name: Building image
+          run: |
+            go run single/build/main.go 
+        - name: Check image
+          run: |
+            docker images
