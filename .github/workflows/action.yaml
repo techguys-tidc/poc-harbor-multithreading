@@ -9,8 +9,8 @@ jobs:
       steps:
         - name: Check env
           run: |
-            echo 'HARBOR_BASE_URL=${{vars.HARBOR_URL}}' >> $GITHUB_ENV
-            echo 'HARBOR_PROJECT=${{vars.HARBOR_PROJECT}}' >> $GITHUB_ENV
+            echo 'HARBOR_BASE_URL=xxxx' >> $GITHUB_ENV
+            echo 'HARBOR_PROJECT=yyyy' >> $GITHUB_ENV
             echo 'HARBOR_USER=${{vars.HARBOR_USER}}' >> $GITHUB_ENV
             echo 'HARBOR_PASS=${{vars.HARBOR_PASS}}' >> $GITHUB_ENV
             echo 'Project: ${{ vars.HARBOR_PROJECT }} | HARBOR_URL: ${{vars.HARBOR_URL}} | HARBOR_S3_URL: ${{ vars.HARBOR_S3_URL }} '
