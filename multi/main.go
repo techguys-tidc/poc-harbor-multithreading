@@ -29,7 +29,7 @@ func generateImageName() string {
 func buildImage(imageName string) {
 	for i := 0; i < loopCount; i++ {
 		image := fmt.Sprintf("%s/%s/%s:%v", harborURL, project, imageName, i)
-		cmd := exec.Command("docker", "buildx", "build", "-t", image, ".")
+		cmd := exec.Command("docker", "buildx", "build", "--no-cache", "-t", image, ".")
 		building, err := cmd.CombinedOutput()
 		if err != nil {
 			log.Fatalf("Failed to build to image: %v", err)
