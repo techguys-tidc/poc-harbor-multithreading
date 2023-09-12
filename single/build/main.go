@@ -30,7 +30,7 @@ func buildImage() {
 	name := nameGenerator.Generate()
 	imageName := name
 	image := fmt.Sprintf("%s/%s/%s:%s", harborURL, project, imageName, imageTag)
-
+	fmt.Printf("image name:%s", image)
 	cmd := exec.Command("docker", "buildx", "build", "-t", image, ".")
 	building, err := cmd.CombinedOutput()
 	if err != nil {
