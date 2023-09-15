@@ -6,48 +6,35 @@ import (
 	"os"
 	"os/exec"
 	"time"
-
-	"github.com/goombaio/namegenerator"
 )
 
 var (
-	harborURL     = os.Getenv("HARBOR_BASE_URL")
+	harborURL     = os.Getenv("HARBOR_URL")
 	project       = os.Getenv("HARBOR_PROJECT")
+	imageName     = os.Getenv("IMAGE_NAME")
+	imageTag      = os.Getenv("IMAGE_TAG")
 	username      = os.Getenv("HARBOR_USER")
 	password      = os.Getenv("HARBOR_PASS")
 	parallelCount = 5
-	loopCount     = 50
+	loopCount     = 10 // Number of times each worker will push
 )
 
-func generateImageName() string {
-	seed := time.Now().UTC().UnixNano()
-	nameGenerator := namegenerator.NewNameGenerator(seed)
-	name := nameGenerator.Generate()
-	return name
-}
-
-func buildImage(imageName string) {
-	for i := 0; i < loopCount; i++ {
-		image := fmt.Sprintf("%s/%s/%s:%v", harborURL, project, imageName, i)
-		cmd := exec.Command("docker", "buildx", "build", "--no-cache", "-t", image, ".")
-		building, err := cmd.CombinedOutput()
-		if err != nil {
-			log.Fatalf("Failed to build to image: %v", err)
-		}
-		fmt.Printf("Building: %s\n", (building))
-	}
-}
-
-func pushImage(workerID int, ch chan time.Duration, imageName string) {
-
+func pushImage(workerID int, ch chan time.Duration) {
 	var totalDuration time.Duration
 
 	for i := 0; i < loopCount; i++ {
-		image := fmt.Sprintf("%s/%s/%s:%v", harborURL, project, imageName, i)
-
+		tag := fmt.Sprintf("%v.%v", workerID, i)
+		image := fmt.Sprintf("%s/%s/%s:%s", harborURL, project, imageName, tag)
+		testImage := fmt.Sprintf("%v:%v", imageName, imageTag)
+		cmdTag := exec.Command("docker", "tag", testImage, image)
+		_, err := cmdTag.CombinedOutput()
+		if err != nil {
+			log.Printf("Worker %d: Failed to tag image on loop %d: %v", workerID, i, err)
+			continue
+		}
 		startTime := time.Now()
-		cmd := exec.Command("docker", "push", image)
-		pushing, err := cmd.CombinedOutput()
+		cmdPush := exec.Command("docker", "push", image)
+		pushing, err := cmdPush.CombinedOutput()
 		if err != nil {
 			log.Printf("Worker %d: Failed to push image on loop %d: %v", workerID, i, err)
 			continue
@@ -64,9 +51,6 @@ func pushImage(workerID int, ch chan time.Duration, imageName string) {
 }
 
 func main() {
-	imageName := generateImageName()
-	buildImage(imageName)
-
 	cmd := exec.Command("docker", "login", harborURL, "-u", username, "-p", password)
 	pushing, err := cmd.CombinedOutput()
 	if err != nil {
@@ -77,7 +61,7 @@ func main() {
 	ch := make(chan time.Duration, parallelCount)
 
 	for i := 0; i < parallelCount; i++ {
-		go pushImage(i, ch, imageName)
+		go pushImage(i, ch)
 	}
 
 	var totalDuration time.Duration

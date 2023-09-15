@@ -1,6 +1,7 @@
-FROM alpine
+FROM alpine:latest
 
-RUN echo $(date +%Y-%m-%d:%H:%M:%S.%N) > test.txt
+RUN dd if=/dev/zero of=test.img bs=1 count=0 seek=100M
 
-# COPY 100MB.bin ./
+RUN echo "$(date +%s)000" 
 
+CMD ["sh"]
