@@ -1,0 +1,25 @@
+name: Push Image
+on: [push]
+jobs:
+    Load-test-harbor:
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v3
+        - name: Set up Go
+          uses: actions/setup-go@v4
+          with:
+            go-version: '1.20'  
+        - name: Load test harbor
+          run: |
+            ./harbor.sh
+    Load-test-harbor-S3:
+        runs-on: ubuntu-20.04
+        steps:
+          - uses: actions/checkout@v3
+          - name: Set up Go
+            uses: actions/setup-go@v4
+            with:
+              go-version: '1.20'  
+          - name: Load test harbor S3
+            run: |
+                ./harbor-s3.sh
